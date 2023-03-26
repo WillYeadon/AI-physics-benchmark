@@ -23,9 +23,6 @@ def get_answer(prompt, engine_name):
     )
     return response['choices'][0]['message']['content']
 
-[
-  {"role": "user", "content": 'Translate the following English text to French: "{text}"'}
-]
 
 # Set up the OpenAI API
 openai.api_key = ""
@@ -39,7 +36,7 @@ prompt_prefix = "Answer the following question as correctly and concisely as pos
 prompt_suffix = "'? Please answer below."
 
 # Iterate through the rows, starting from row 2 (skipping the header)
-for row in range(2, 6):# worksheet.max_row + 1):
+for row in range(2, worksheet.max_row + 1):
     question = worksheet.cell(row=row, column=6).value  # Column 6 is the 'Question' column
 
     if question is not None:
@@ -48,11 +45,18 @@ for row in range(2, 6):# worksheet.max_row + 1):
         # Get answers from the engines
         answer_davinci_002 = get_answer_old(prompt, "text-davinci-002")
         answer_gpt_35_turbo = get_answer_old(prompt, "text-davinci-002")
-#        answer_gpt_35_turbo = get_answer(prompt, "gpt-3.5-turbo") 
+#        answer_gpt_4 = get_answer(prompt, "text-davinci-002") 
+
+        ###############
+        # CHARGES!
+        ###############
+        #answer_gpt_35_turbo = get_answer(prompt, "gpt-3.5-turbo") 
+        #answer_gpt_4 = get_answer(prompt, "gpt-3.5-turbo") 
 
         # Store the answers in the corresponding columns
         worksheet.cell(row=row, column=8).value = answer_davinci_002
         worksheet.cell(row=row, column=10).value = answer_gpt_35_turbo
+#        worksheet.cell(row=row, column=12).value = answer_gpt_4
 
 # Save the updated workbook
 workbook.save("Question-Answer-Bank-Updated.xlsx")
